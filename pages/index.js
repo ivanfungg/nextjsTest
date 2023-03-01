@@ -18,6 +18,8 @@ import { Typography, AppBar, Card, CardActions,
   CardContent,CssBaseline,Grid,Toolbar,Container } from "@mui/material";
 
 import RestaurantIcon from '@mui/icons-material/Restaurant';
+import { borderRadius } from '@mui/system';
+
 
 export default function Home() {
   
@@ -121,7 +123,7 @@ export default function Home() {
               <CloseIcon fontSize="inherit" />
             </IconButton>
           }
-          sx={{ mb: 2, position:"absolute", bottom:0, width:"90%"}}
+          sx={{ mb: 2, mt: 3}}
         >
           輸入資料不正確
         </Alert>
@@ -131,157 +133,169 @@ export default function Home() {
   const onPressNumButton = (num) =>{
     setPplNumber(num)
 
-  }
-  const theme = createTheme({
+    }
+  const themeIndex = createTheme({
     typography: {
 
-      button: { 
+      fontFamily: [
+        'Noto Sans TC',
+        'sans-serif',
+      ].join(','),
+
+      button: {
         fontSize: 15,
         fontWeight: 700,
-      },    
-    },  
+      },
+    },
     status: {
       danger: '#e53e3e',
     },
     palette: {
       primary: {
-        main: '#0971f1',
+        main: '#00B2FF',
         darker: '#053e85',
+        contrastText: '#fff'
       },
       neutral: {
         main: '#64748B',
         contrastText: '#fff',
       },
-      secondary:{
+      secondary: {
         main: '#AFCBF5',
         contrastText: '#0052CE',
 
+      },
+      dim:{
+        main:'#C8EEFF',
+        contrastText: '#00B2FF',
       }
     },
   });
 
+  const buttonRow = () =>{
+    const row = []
+    for(let i =0; i<8; i++){
+
+      row.push(
+        <Grid key={i} item  xs={1} sm={2} md={4}>
+                  <Button 
+                  sx = {{borderRadius:"10px", 
+                  boxShadow:"none",
+                  "&:focus": {
+                    backgroundColor:"#00B2FF",
+                    color:"white",
+                    boxShadow:"none"
+                  },
+                  
+                }}
+                  color='dim'
+                  variant="contained" 
+                  fullWidth 
+                  onClick={()=>onPressNumButton(i+1)}>{i+1}人</Button>   
+
+              </Grid>
+      )
+
+    }
+    return row
+  }
+  
+ 
+  
+ 
+
   return (
-    <div style={{display: 'flex',  justifyContent:'center', alignItems:'center', height: '100vh'}}>
+    //<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+      <>
       <Head>
         <title>testApp</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main>
-
-        <Box 
-        sx={{ p: 1, display:'flex',flexDirection:"column",
-        gap: 2, boxShadow:"3px 3px 20px rgba(0,0,0,0.0)",
-         borderRadius:2, alignItems:"center", margin:5, 
-         backgroundColor:"white", maxWidth:400}}>
-          
-          
-          <div style = {{display:'flex', flexDirection:"row"}}>
-          <Typography sx={{fontWeight:"700"}}>歡迎來到</Typography>
-          </div>
-          
-           <Typography  color='primary' variant='h4' align='center'
-           sx={{fontWeight:"700"}}
+      <ThemeProvider theme={themeIndex}>
+        <div style = {{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+      
+        <div style = {{marginLeft:20,marginRight:20,alignItems:"center", maxWidth:400}}>
+          <div style = {{  marginTop:30}}>
+         
            
-           >{data}</Typography>
+            <Typography align="center" sx={{ fontWeight: "700" }}>歡迎來到</Typography>
+            
+            <Typography align="center" color='primary' fontSize={40} align='center'
+              sx={{ fontWeight: "700" }}
 
+            >{data}</Typography>
 
-          <div style = {{marginTop:30, display:"flex",alignItems:"center",width:"90%",flexDirection:"column"}}>
-          <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="phone"
-              label="電話"
-              name="phone"
-              autoComplete="phone"
-              autoFocus
-              value = {phoneNumber}
-              onChange={(event)=> setPhoneNumer(event.target.value)}
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="number"
-              label="人數"
-              name="phone"
-              autoFocus
-              value = {pplNumber}
-              onChange={(event)=> setPplNumber(event.target.value)}
-            />
-          {/* <TextField sx = {{marginLeft:2, width:"100%"}}
-                    value = {phoneNumber}
-                    onChange={(event)=> setPhoneNumer(event.target.value)}
-                    /> */}
           </div>
-          
-          {/* <div style = {{display:"flex",alignItems:"center", width:"90%",marginBottom:20 }}>
-          <Typography variant='h6' sx={{width:70, fontWeight:"700"}}>人數:</Typography>
-          <TextField sx = {{marginLeft:2, width:"100%"}}
-                    value = {pplNumber}
-                    onChange={(event)=> setPplNumber(event.target.value)}
-                    />
+       
 
-          </div> */}
-          <ThemeProvider theme={theme}>
-          <div style = {{width:"90%", marginBottom:10}}>
+        <div style = {{ backgroundColor:"white", marginTop:50} }>
+          <TextField
 
-          <Grid  container spacing={{ xs: 1, md: 2 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-              <Grid item  xs={1} sm={2} md={4}>
-                <Button  variant="outlined" fullWidth 
-                onClick={()=>onPressNumButton(1)}>1人</Button>    
-              </Grid>
-              
-              <Grid item  xs={1} sm={2} md={4}>
-                <Button variant="outlined" fullWidth 
-                onClick={()=>onPressNumButton(2)}>2人</Button>       
-              </Grid>
-              
-              <Grid item  xs={1} sm={2} md={4}>
-                <Button variant="outlined" fullWidth 
-                onClick={()=>onPressNumButton(3)}>3人</Button> 
-              </Grid>
-              
-              <Grid item  xs={1} sm={2} md={4}>
-                <Button variant="outlined" fullWidth 
-                onClick={()=>onPressNumButton(4)}>4人</Button> 
-              </Grid>
+                sx={{[`& fieldset`]: {
+                  borderRadius: "10px",
+                },}}
+                
+                required
+                fullWidth
+                id="phone"
+                label="請輸入電話"
+                name="phone"
+                autoComplete="phone"
+                autoFocus
+                value={phoneNumber}
+                onChange={(event) => setPhoneNumer(event.target.value)}
+              />
+        </div>
 
-              <Grid item  xs={1} sm={2} md={4}>
-                <Button variant="outlined" fullWidth 
-                onClick={()=>onPressNumButton(5)}>5人</Button> 
-              </Grid>
+        <div style = {{marginTop:20}}>
 
-              <Grid item  xs={1} sm={2} md={4}>
-                <Button variant="outlined" fullWidth 
-                onClick={()=>onPressNumButton(6)}>6人</Button> 
-              </Grid>
-              <Grid item  xs={1} sm={2} md={4}>
-                <Button variant="outlined" fullWidth 
-                onClick={()=>onPressNumButton(7)}>7人</Button> 
-              </Grid>
-              <Grid item  xs={1} sm={2} md={4}>
-                <Button variant="outlined" fullWidth 
-                onClick={()=>onPressNumButton(8)}>8人</Button> 
-              </Grid>
-            </Grid>
-            </div>
-          </ThemeProvider>
+        <Grid  container spacing={{ xs: 2, md: 2 }} columns={{ xs: 3, sm: 6, md: 12 }}>
+              {buttonRow()}
+              <Grid  item  xs={1} sm={2} md={4}>
+                <TextField
+                sx={{[`& fieldset`]: {
+                  borderRadius: "10px",
+                },}}
+                size= "small"
+                required
+                fullWidth
+                id="number"
+                label="人數"
+                name="phone"
+                autoFocus
+                value={pplNumber}
+                onChange={(event) => setPplNumber(event.target.value)}
+              />  
 
-          <Button sx = {{p:2, width:"90%", fontWeight:"700", fontSize:20}}
-            variant="contained"
-            onClick={()=>onClickSubmit()}>
-              <RestaurantIcon sx={{mr:2}}/>
-              test
+              </Grid>
+        </Grid>
+
+        </div>
+       
+        <Button 
+          fullWidth
+          sx = {{mt:8,p:2,fontWeight:"700", fontSize:15, borderRadius:"10px"}}
+          variant="contained"
+          onClick={()=>onClickSubmit()}>
+        <RestaurantIcon sx={{mr:2}}/>
+        開始排隊
         </Button>
 
-        </Box>
-
+       
         {alert()}
+        </div>
+       
+        </div>
+    
+      </ThemeProvider>
+
+        
            
       </main>
-      </div>
+      </>
+     // </div>
 
       )
 }

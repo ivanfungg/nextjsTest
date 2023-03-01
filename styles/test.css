@@ -1,0 +1,39 @@
+/* noto-sans-tc-regular - chinese-traditional */
+@font-face {
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Noto Sans TC';
+    font-style: normal;
+    font-weight: 400;
+    src: url('./fonts/noto-sans-tc-v26-chinese-traditional-regular.eot'); /* IE9 Compat Modes */
+    src: url('./fonts/noto-sans-tc-v26-chinese-traditional-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('./fonts/noto-sans-tc-v26-chinese-traditional-regular.woff2') format('woff2'), /* Super Modern Browsers */
+         url('./fonts/noto-sans-tc-v26-chinese-traditional-regular.woff') format('woff'), /* Modern Browsers */
+         
+        
+  }
+  /* noto-sans-tc-500 - chinese-traditional */
+  @font-face {
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Noto Sans TC';
+    font-style: normal;
+    font-weight: 500;
+    src: url('./fonts/noto-sans-tc-v26-chinese-traditional-500.eot'); /* IE9 Compat Modes */
+    src: url('./fonts/noto-sans-tc-v26-chinese-traditional-500.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('./fonts/noto-sans-tc-v26-chinese-traditional-500.woff2') format('woff2'), /* Super Modern Browsers */
+         url('./fonts/noto-sans-tc-v26-chinese-traditional-500.woff') format('woff'), /* Modern Browsers */
+        
+        
+  }
+  /* noto-sans-tc-700 - chinese-traditional */
+  @font-face {
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Noto Sans TC';
+    font-style: normal;
+    font-weight: 700;
+    src: url('./fonts/noto-sans-tc-v26-chinese-traditional-700.eot'); /* IE9 Compat Modes */
+    src: url('./fonts/noto-sans-tc-v26-chinese-traditional-700.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('./fonts/noto-sans-tc-v26-chinese-traditional-700.woff2') format('woff2'), /* Super Modern Browsers */
+         url('./fonts/noto-sans-tc-v26-chinese-traditional-700.woff') format('woff'), /* Modern Browsers */
+        
+         
+  }
