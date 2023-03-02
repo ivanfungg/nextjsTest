@@ -27,6 +27,7 @@ export default function Home() {
   const [phoneNumber, setPhoneNumer] = useState("")
   const [pplNumber,setPplNumber] = useState("")
   const [showAlert,setShowAlert] = useState(false)
+  const [ticketType, setTicketType] = useState({})
   const router = useRouter()
   const searchParams = useSearchParams();
   const key = router.query.key;
@@ -41,7 +42,11 @@ export default function Home() {
       if (snapshot.exists()){
         let data = snapshot.val()
         let name = data.name
+        let getTicketType = data.ticketConfig.type
 
+        setTicketType(getTicketType)
+        console.log(getTicketType)
+        console.log(name)
         setData(name)
       }
     })
@@ -76,21 +81,36 @@ export default function Home() {
 
         get(child(ref(db),"key/"+key)).then((snapshot)=>{
           if (snapshot.exists()){
+              
+              var ticketPrefix = "na"
+              if (pplNumber <= ticketType.A){
+                ticketPrefix = "A"
+              }else if (pplNumber <= ticketType.B){
+                ticketPrefix = "B"
+              }else if (pplNumber <= ticketType.C){
+                ticketPrefix = "C"
+              }else if (pplNumber <= ticketType.D){
+                ticketPrefix = "D"
+              }else{
+                console.log("numppl invail")
+                return
+              }
             
-              get(child(ref(db),"count/"+key)).then((snapshot)=>{
-                if (snapshot.exists()){
-                let ticket = "A" + pad(snapshot.val(),3)
-                
-                let changedCount = snapshot.val()+1
-                set(ref(db, 'count/' + key), changedCount)
-                set(ref(db, 'queue/' + key +"/"+ phoneNumber), {
-                  numPeople: pplNumber,
-                  ticketNumber:snapshot.val(),
-                  ticketCode: ticket,
-                  createdAt: serverTimestamp()
-                })
+              get(child(ref(db),"count/"+key + "/" + ticketPrefix)).then((count)=>{
+                if (count.exists()){
+                  
+                  let ticket = ticketPrefix + pad(count.val(),3)
+                  
+                  let changedCount = count.val()+1
+                  set(ref(db, 'count/' + key + "/" + ticketPrefix), changedCount)
+                  set(ref(db, 'queue/' + key +"/"+ticketPrefix+"/"+phoneNumber), {
+                    numPeople: pplNumber,
+                    ticketNumber:count.val(),
+                    ticketCode: ticket,
+                    createdAt: serverTimestamp()
+                  })
 
-                router.push("/posts/first-post/?key=" + phoneNumber +"&code=" + key)
+                  router.push("/posts/first-post/?key=" + phoneNumber +"&code=" + key + "&type="+ticketPrefix )
                 }
               })
               
@@ -184,6 +204,7 @@ export default function Home() {
                   "&:focus": {
                     backgroundColor:"#00B2FF",
                     color:"white",
+
                     boxShadow:"none"
                   },
                   
@@ -205,7 +226,7 @@ export default function Home() {
  
 
   return (
-    //<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+   
       <>
       <Head>
         <title>testApp</title>
@@ -290,12 +311,10 @@ export default function Home() {
         </div>
     
       </ThemeProvider>
-
-        
-           
+     
       </main>
       </>
-     // </div>
+
 
       )
 }

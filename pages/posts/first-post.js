@@ -31,7 +31,7 @@ export default function FirstPost() {
     const searchParams = useSearchParams();
     const router = useRouter();
 
-    
+    const [resName, setResName] = useState("")
     const [numppl,setnumppl] = useState("")
     const [code,setCode] = useState("")
     const [phoneNumber,setPhoneNumer] = useState("")
@@ -45,33 +45,34 @@ export default function FirstPost() {
 
     const db = getDatabase()
 
-    console.log('run page')
-
-    // useEffect(()=>{
-    //   WebFont.load({
-    //     google: {
-    //       families: ['Noto Sans TC']
-    //     }
-    //   });
-
-    // },[])
     useEffect(()=>{
         
         if (router.isReady){
-        const key2 = router.query.key
+        const phoneKey = router.query.key
         const code = router.query.code
+        const type = router.query.type
 
         console.log('have key')
-        console.log(code)
+        console.log(type)
+
+
+        get(child(ref(db), "key/" + code +"/name")).then((name)=>{
+          if (name.exists()){
+            setResName(name.val())
+
+          }
+        })
+
         
-        get(child(ref(db),"queue/"+code+"/"+key2)).then((snapshot)=>{
+        
+        get(child(ref(db),"queue/" +code+"/" + type + "/" +phoneKey)).then((snapshot)=>{
             if (snapshot.exists()){
                 const data = snapshot.val()
                 let timestamp = data.createdAt
                 let timeString = moment(timestamp).format("h:mm a")
                 setnumppl(data.numPeople)
                 setCode(code)
-                setPhoneNumer(key2)
+                setPhoneNumer(phoneKey)
                 setTicket(data.ticketCode)
                 setTicketIndex(data.ticketNumber)
                 setTicketTime(timeString)
@@ -88,7 +89,7 @@ export default function FirstPost() {
     useEffect(()=>{
      
       
-      const dbRef = ref(db,"queue/" + router.query.code)
+      const dbRef = ref(db,"queue/" + router.query.code + "/" + router.query.type)
 
       onValue(dbRef,(snapshot)=>{
 
@@ -113,7 +114,7 @@ export default function FirstPost() {
     },[router.isReady])
 
     useEffect(()=>{
-      const dbRef = ref(db,"caller/" + router.query.code + "/A/ticketNum")
+      const dbRef = ref(db,"caller/" + router.query.code + "/"+ router.query.type +"/ticketCode")
 
       onValue(dbRef,(snapshot)=>{
         let data = snapshot.val()
@@ -229,7 +230,7 @@ export default function FirstPost() {
               <Typography align="center" 
               sx={{fontSize:25, fontWeight:"700", marginBottom:2}}
               
-              >Tohuku Ca</Typography>
+              >{resName}</Typography>
               <Typography variant="h6" align="center">你的票號</Typography>
               <Typography variant="h4" align="center">{ticket}</Typography>
 
@@ -289,7 +290,7 @@ export default function FirstPost() {
                 </Grid>
               </Grid>
               <div style={{marginTop:10}}>
-              <Typography variant="p1">*超過5張票後需重新排隊</Typography>
+              <Typography variant="p1">*ticket invalid after 5 passes</Typography>
               </div>
               </div>
 
