@@ -19,6 +19,10 @@ import { color } from "@mui/system";
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import PhoneIcon from '@mui/icons-material/Phone';
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import Alert from '@mui/material/Alert';
+
+
 import { createTheme,ThemeProvider } from '@mui/material/styles';
 import moment from "moment"
 
@@ -42,6 +46,7 @@ export default function FirstPost() {
     const [queue,setQueue] = useState([])
     const [tableRemain, setTableRemain] = useState(0)
     const [ticketTime, setTicketTime] = useState("")
+    const [tempOrder, setTempOrder] = useState(null)
 
     const db = getDatabase()
 
@@ -52,19 +57,21 @@ export default function FirstPost() {
         const code = router.query.code
         const type = router.query.type
 
-        console.log('have key')
-        console.log(type)
-
-
         get(child(ref(db), "key/" + code +"/name")).then((name)=>{
           if (name.exists()){
             setResName(name.val())
-
           }
         })
 
-        
-        
+        let path = "queue/"+ code + "/" + type +"/" + phoneKey +"/tempOrder/"
+
+        get(child(ref(db),path)).then((order)=>{
+          if (order.exists()){
+            let data = order.val()
+            setTempOrder(data)
+          }
+        })
+   
         get(child(ref(db),"queue/" +code+"/" + type + "/" +phoneKey)).then((snapshot)=>{
             if (snapshot.exists()){
                 const data = snapshot.val()
@@ -105,7 +112,6 @@ export default function FirstPost() {
 
         if (tempArr.length > 0){
           setQueue(tempArr)
-          console.log(tempArr[tempArr.length-1])
         }
         
 
@@ -125,30 +131,29 @@ export default function FirstPost() {
     },[router.isReady])
 
     useEffect(()=>{
-    
-      let myTicket = ticket
+
       let length = queue.length
       var myIndex = 0
       var currentIndex = 0
      
       if (length>0){
-        for (let i =0; i<length ; i++){
-          console.log(currentTicket)
-          if (queue[i].ticketCode === myTicket){
+        for (let i =0; i<length ; i++){         
+          if (queue[i].ticketCode === ticket){         
             myIndex = i
           }
           if (queue[i].ticketCode === currentTicket){
             currentIndex = i
           }
         }
-     
+    
         setTableRemain(myIndex-currentIndex-1)
       }
-    },[currentTicket,queue])
+    },[currentTicket,queue,ticket])
 
     const theme = createTheme({
   
       typography: {
+        
         fontFamily: [
           'Noto Sans TC',
           'sans-serif',
@@ -197,8 +202,9 @@ export default function FirstPost() {
       },
       palette: {
         primary: {
-          main: '#0971f1',
+          main: '#00B2FF',
           darker: '#053e85',
+          contrastText: '#fff'
         },
         neutral: {
           main: '#64748B',
@@ -219,6 +225,49 @@ export default function FirstPost() {
       code + "&type=" + 
       router.query.type)
 
+    }
+
+    const preOrderButton = ()=>{
+    
+
+      if (tempOrder === null){
+        return (
+          <div style = {{height:80, justifyContent:"center", display : "flex", alignItems:"center"}}>
+
+            <Button
+                    fullWidth
+                    color = "primary"
+                    sx = {{p:2,fontWeight:"700", fontSize:15, borderRadius:"10px"}}
+                    variant="contained"
+                    onClick={()=>onPressPerOrder()}
+                    >預先選擇食物</Button>
+          </div>
+        )
+
+      }else{
+        return(
+          <div style = {{marginBottom:30}}>
+            
+              <Alert sx={{mt:6}} severity="success">成功預先落單! 訂單將會在你入坐時送到服務員手上</Alert>
+            
+
+          
+        <div style = {{height:80, justifyContent:"center", display : "flex", alignItems:"center"}}>
+
+            <Button
+                    fullWidth
+                    color = "primary"
+                    sx = {{p:2,fontWeight:"700", fontSize:15, borderRadius:"10px"}}
+                    variant="contained"
+                    onClick={()=>onPressPerOrder()}
+                    >修改食物</Button>
+          </div>
+          </div>
+        )
+
+      }
+
+      
     }
    
 
@@ -299,7 +348,7 @@ export default function FirstPost() {
                 </Grid>
               </Grid>
               <div style={{marginTop:10}}>
-              <Typography variant="p1">*ticket invalid after 5 passes</Typography>
+              <Typography variant="p1">*超過5張票需要重新排隊</Typography>
               </div>
               </div>
 
@@ -348,15 +397,7 @@ export default function FirstPost() {
               </div>
               </div>
 
-              <div style = {{height:80, justifyContent:"center", display : "flex", alignItems:"center"}}>
-                <Button
-                fullWidth
-                sx = {{p:2,fontWeight:"700", fontSize:15, borderRadius:"10px"}}
-                variant="contained"
-                onClick={()=>onPressPerOrder()}
-                >per-order</Button>
-
-              </div>
+              {preOrderButton()}
 
               </div>
 

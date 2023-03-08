@@ -10,6 +10,9 @@ import { Typography, AppBar, Card, CardActions,
 import { ScrollMenu, VisibilityContext } from "react-horizontal-scrolling-menu";
 import { height } from "@mui/system";
 
+import StorefrontIcon from '@mui/icons-material/Storefront';
+import Image from "next/image";
+
 
 
 export default function Meun() {
@@ -105,8 +108,8 @@ export default function Meun() {
         return (
             
           
-            <div style = {{marginLeft:5,
-                            marginRight:5, 
+            <div style = {{marginLeft:0,
+                            marginRight:10, 
                             minWidth:80, 
                             backgroundColor:"red",
                             padding:10}}
@@ -118,6 +121,23 @@ export default function Meun() {
             </div>
         );
       }
+
+      const MyImage = ()=>{
+        return(
+            <Image
+        src="https://firebasestorage.googleapis.com/v0/b/testandroid-cb45e.appspot.com/o/food%2Fsushi.jpg?alt=media&token=d4a60493-cc9b-4071-94ff-b7300f2756e2"
+        alt="Picture of rose"
+        width="0"
+        height="0"
+        sizes="100vw"
+        style={{ width: '100%', height: "auto", maxHeight:200}}
+       
+        
+        />
+            
+        )
+      }
+
       const dishGrid = (cat)=>{
         if (fullMenu.length > 0){
             var gridArr = []
@@ -132,15 +152,17 @@ export default function Meun() {
                 }
                 gridArr.push(
                 <Grid  item  xs={1} sm={2} md={4}>
-                    <div style = {{display:"flex", flexDirection:"row"}}>
-                     <div style = {{backgroundColor:"gray", flex:0.8}}
+                    <div style = {{display:"flex", flexDirection:"column", height:200, backgroundColor:"gray"}}>
+                     <div style = {{backgroundColor:"gray"}}
                      onClick = {()=>handleClickDish(currentDish.chName,fullMenu[cat].chName)}>
-                    <Typography>{currentDish.chName}</Typography>
-                    <Typography>{currentDish.price}</Typography>
+                        <MyImage></MyImage>
+                        <Typography>{currentDish.chName}</Typography>
+                        <Typography>{currentDish.price}</Typography>
+
+                        
                         
                      </div>
-
-                        <div style = {{backgroundColor:"white", flex:0.2}}>
+                     <div style = {{backgroundColor:"white" ,position:"absolute"}}>
 
                             <Typography>{quantity}</Typography>
                             <div style = {{height:30,width:30,backgroundColor:"blue"}}
@@ -148,6 +170,8 @@ export default function Meun() {
                             </div>
 
                         </div>
+
+                        
 
                      </div>
                 </Grid>
@@ -202,7 +226,7 @@ export default function Meun() {
 
       }
       const handleClickCart = () =>{
-        router.push("/posts/orderCheck/?phone=" + 
+        router.push("/posts/orderCheck/?phoneKey=" + 
         phoneKey +"&resCode=" + 
         resCode + "&type=" + 
         type)
@@ -210,25 +234,31 @@ export default function Meun() {
       }
 
 
+
+
     return(
 
         <>
         <main>
-            <div style = {{backgroundColor:"gray"}}>
+            <div style = {{marginLeft:10,marginRight:10}} >
+                
 
-
-                <div style = {{backgroundColor:"yellow", height:40}}>
-                    <div style = {{position:"absolute", right:10, width:40, height:40, backgroundColor:"green"}}
+                <div style = {{ height:40, backgroundColor:"yellow"}}>
+                    <div style = {{position:"absolute", right:10, width:40, height:40, display:"flex",justifyContent:"center", alignItems:"center"}}
                         onClick = {()=>handleClickCart()}>
-                        <div style = {{position:"absolute", right:0, top:0, backgroundColor:"blue", width:20, height:20}}>
-                            <Typography color={"white"}>{numOfOrder}</Typography>
+                            
+                            
+                            <StorefrontIcon sx = {{width:30, height:30}}></StorefrontIcon>
+                            
+                        <div style = {{position:"absolute", right:0, top:0, backgroundColor:"red", width:20, height:20,borderRadius:10}}>
+                            <Typography fontSize={12} align="center" color={"white"}>{numOfOrder}</Typography>
                         </div>
 
                     </div>
 
                 </div>
             
-                <div style = {{backgroundColor:"blue", width:"100%", height:50, display:"flex", flexDirection:"row", overflowX: "auto"}}>           
+                <div style = {{height:50, display:"flex", flexDirection:"row", overflowX: "auto"}}>           
                     <ScrollMenu>
                     {fullMenu.map((item) => (
                         
@@ -242,9 +272,9 @@ export default function Meun() {
                     </ScrollMenu>
         
                 </div>
-                <div style = {{backgroundColor:"red", marginRight:10, marginLeft:10}}>
+                <div style = {{marginRight:0, marginLeft:0, marginTop:10}}>
 
-                    <Grid  container columnSpacing={{ xs: 2, md: 2 }} columns={{ xs: 2, sm: 6, md: 12 }}>
+                    <Grid  container spacing={{ xs: 2, md: 2 }} columns={{ xs: 2, sm: 6, md: 12 }}>
 
                         {dishGrid(seletedCat)}
                     
