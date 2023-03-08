@@ -142,7 +142,7 @@ export default function FirstPost() {
           }
         }
      
-        setTableRemain(myIndex-currentIndex)
+        setTableRemain(myIndex-currentIndex-1)
       }
     },[currentTicket,queue])
 
@@ -211,6 +211,15 @@ export default function FirstPost() {
         }
       },
     });
+
+    const onPressPerOrder = () =>{
+
+      router.push("/posts/menu/?phone=" + 
+      phoneNumber +"&resCode=" + 
+      code + "&type=" + 
+      router.query.type)
+
+    }
    
 
     return (
@@ -294,7 +303,7 @@ export default function FirstPost() {
               </div>
               </div>
 
-              <div style = {{marginTop:30, marginBottom:20}}>
+              <div style = {{marginTop:30, marginBottom:30}}>
 
               <div style = {{display:"flex", flexDirection:"row", height:40}}>
                   <div style = {{display:"flex", flex:0.5, alignItems:"flex-end"}}>
@@ -339,9 +348,15 @@ export default function FirstPost() {
               </div>
               </div>
 
+              <div style = {{height:80, justifyContent:"center", display : "flex", alignItems:"center"}}>
+                <Button
+                fullWidth
+                sx = {{p:2,fontWeight:"700", fontSize:15, borderRadius:"10px"}}
+                variant="contained"
+                onClick={()=>onPressPerOrder()}
+                >per-order</Button>
 
-
-              
+              </div>
 
               </div>
 

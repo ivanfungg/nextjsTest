@@ -8,14 +8,18 @@
   "dependencies": {
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
+    "@fontsource/roboto": "^4.5.8",
     "@mui/icons-material": "^5.11.9",
     "@mui/material": "^5.11.10",
     "bootstrap": "^5.2.3",
+    "eslint-plugin-react-hooks": "^4.6.0",
     "firebase": "^9.17.1",
-    "moment": "^2.29.4",
+    "moments": "^0.0.2",
     "next": "latest",
     "react": "18.2.0",
     "react-bootstrap": "^2.7.2",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "react-horizontal-scrolling-menu": "^3.2.5",
+    "webfontloader": "^1.6.28"
   }
 }
