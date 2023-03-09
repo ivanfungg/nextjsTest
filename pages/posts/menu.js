@@ -12,10 +12,51 @@ import { height } from "@mui/system";
 
 import StorefrontIcon from '@mui/icons-material/Storefront';
 import Image from "next/image";
-
+import { createTheme,ThemeProvider } from '@mui/material/styles';
+import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 
 export default function Meun() {
+    const theme = createTheme({
+  
+        typography: {
+          
+          fontFamily: [
+            'Noto Sans TC',
+            'sans-serif',
+          ].join(','),     
+
+          tab:{
+            fontSize: 15,
+            color:"#FFF",
+            fontWeight:"700",
+            fontFamily: [
+                'Noto Sans TC',
+                'sans-serif',
+              ].join(','),
+              
+          },
+          sub:{
+            fontSize: 20,
+            color:"#FFF",
+            fontWeight:"700",
+            fontFamily: [
+                'Noto Sans TC',
+                'sans-serif',
+              ].join(','),
+              
+          },
+
+          h6:{
+            fontSize: 15,
+            color:"#00",
+            fontWeight:"700",
+          
+
+          }
+        }})
+    
 
     const router = useRouter();
    
@@ -37,6 +78,7 @@ export default function Meun() {
         const phoneKey = router.query.phone
         const code = router.query.resCode
         const type = router.query.type
+        
 
         
     
@@ -111,26 +153,36 @@ export default function Meun() {
             <div style = {{marginLeft:0,
                             marginRight:10, 
                             minWidth:80, 
-                            backgroundColor:"red",
-                            padding:10}}
+                            backgroundColor:"#FF8A00",
+                            padding:10,
+                        borderRadius:10,
+                        display:"flex",
+                        justifyContent:"center"
+                    }}
                 onClick = {()=>handleClickTopMenu(idx)}
                             
                             >
-             <Typography>{title}</Typography>
+             <Typography  
+             style = {{ whiteSpace:"nowrap",
+                        textOverflow:"ellipsis",
+                  
+                }}
+            
+              variant="tab">{title}</Typography>
              
             </div>
         );
       }
 
-      const MyImage = ()=>{
+      const myImage = (url)=>{
         return(
             <Image
-        src="https://firebasestorage.googleapis.com/v0/b/testandroid-cb45e.appspot.com/o/food%2Fsushi.jpg?alt=media&token=d4a60493-cc9b-4071-94ff-b7300f2756e2"
-        alt="Picture of rose"
+        src = {url}
         width="0"
         height="0"
         sizes="100vw"
-        style={{ width: '100%', height: "auto", maxHeight:200}}
+       
+        style={{ width: '100%', height: "auto", height:150, objectFit:"cover", backgroundColor:"gray"}}
        
         
         />
@@ -151,30 +203,63 @@ export default function Meun() {
               
                 }
                 gridArr.push(
+                  
                 <Grid  item  xs={1} sm={2} md={4}>
-                    <div style = {{display:"flex", flexDirection:"column", height:200, backgroundColor:"gray"}}>
-                     <div style = {{backgroundColor:"gray"}}
+                    <div style = {{display:"flex",
+                                    flexDirection:"column",
+                                    
+                                    }}>
+                     <div style = {{boxShadow :"0px 3px 3px rgba(0, 0, 0, 0.15)", 
+                                    borderRadius:10,
+                                    overflow:"hidden",
+                                    display:"flex",
+                                    flexDirection:"column",
+                                    backgroundColor:"white"
+                                }}
                      onClick = {()=>handleClickDish(currentDish.chName,fullMenu[cat].chName)}>
-                        <MyImage></MyImage>
-                        <Typography>{currentDish.chName}</Typography>
-                        <Typography>{currentDish.price}</Typography>
+                        
+                       {myImage(currentDish.imageUrl)}
+
+                       <div style = {{margin:5}}>
+                
+                        <Typography variant="h6">{currentDish.chName }</Typography>
+                        <Typography variant="h6">{"$"+currentDish.price}</Typography>
+                        </div>
 
                         
                         
                      </div>
-                     <div style = {{backgroundColor:"white" ,position:"absolute"}}>
-
-                            <Typography>{quantity}</Typography>
-                            <div style = {{height:30,width:30,backgroundColor:"blue"}}
-                            onClick = {()=>handleClickSub(currentDish.chName)}>
-                            </div>
+                     {quantity > 0 ? ( <div style = {{position:"absolute", marginTop:5, marginLeft:5}}>
+                        <div style = {{backgroundColor:"red", 
+                                        height:30, 
+                                        width:30, 
+                                        display:"flex",
+                                        justifyContent:"center",
+                                        alignItems:"center",
+                                        borderRadius:15}}>
+                        <Typography variant="tab">{quantity}</Typography>
 
                         </div>
+
+                            
+                            <div style = {{marginTop:5, height:30,width:30, 
+                            backgroundColor:"white",
+                            borderRadius:15,        
+                            display:'flex',
+                            justifyContent:"center",
+                        alignItems:"center"}}
+                            onClick = {()=>handleClickSub(currentDish.chName)}>
+                                <RemoveCircleIcon sx = {{width:30,height:30}}></RemoveCircleIcon>
+                            </div>
+
+                        </div>) : (<div></div>)}
+                     
 
                         
 
                      </div>
                 </Grid>
+             
                 )
             }
 
@@ -240,15 +325,29 @@ export default function Meun() {
 
         <>
         <main>
-            <div style = {{marginLeft:10,marginRight:10}} >
+            <ThemeProvider theme={theme}>   
+            <div style = {{marginLeft:5,marginRight:5}} >
                 
 
-                <div style = {{ height:40, backgroundColor:"yellow"}}>
-                    <div style = {{position:"absolute", right:10, width:40, height:40, display:"flex",justifyContent:"center", alignItems:"center"}}
+                <div style = {{ height:40}}>
+
+                    <div style = {{position:"absolute", left:10,top:10, width:40, height:40, 
+                            display:"flex",justifyContent:"center", alignItems:"center",
+                            }}
+                            onClick = {()=>router.back()}>
+                               <ArrowBackIcon></ArrowBackIcon>
+                            </div>
+                    
+                  
+                    
+                    <div style = {{position:"absolute", right:10,top:10, height:40, 
+                        display:"flex",justifyContent:"flex-end", alignItems:"center",
+                       }}
+
                         onClick = {()=>handleClickCart()}>
-                            
-                            
-                            <StorefrontIcon sx = {{width:30, height:30}}></StorefrontIcon>
+                            <Typography color="#0085FF" variant="h6" sx={{mr:1}}>查看已選食物</Typography>
+                           
+                            <StorefrontIcon sx = {{width:30, height:30,mr:1,color:"#0085FF"}}></StorefrontIcon>
                             
                         <div style = {{position:"absolute", right:0, top:0, backgroundColor:"red", width:20, height:20,borderRadius:10}}>
                             <Typography fontSize={12} align="center" color={"white"}>{numOfOrder}</Typography>
@@ -258,7 +357,7 @@ export default function Meun() {
 
                 </div>
             
-                <div style = {{height:50, display:"flex", flexDirection:"row", overflowX: "auto"}}>           
+                <div style = {{marginTop:10, height:50, display:"flex", flexDirection:"row", overflowX: "auto"}}>           
                     <ScrollMenu>
                     {fullMenu.map((item) => (
                         
@@ -283,6 +382,7 @@ export default function Meun() {
                 </div>
 
             </div>
+            </ThemeProvider>
         </main>
         
         

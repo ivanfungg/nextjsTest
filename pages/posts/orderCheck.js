@@ -3,8 +3,52 @@ import {useState, useEffect} from "react"
 import { useRouter } from 'next/router'
 import { Typography, AppBar, Card, CardActions,
     CardContent,CssBaseline,Grid,Toolbar,Container } from "@mui/material";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+
+import { createTheme,ThemeProvider } from '@mui/material/styles';
 
 export default function OrderCheck() {
+
+    const theme = createTheme({
+  
+        typography: {
+          
+          fontFamily: [
+            'Noto Sans TC',
+            'sans-serif',
+          ].join(','),     
+
+          tab:{
+            fontSize: 15,
+            color:"#FFF",
+            fontWeight:"700",
+            fontFamily: [
+                'Noto Sans TC',
+                'sans-serif',
+              ].join(','),
+              
+          },
+          sub:{
+            fontSize: 20,
+            color:"#FFF",
+            fontWeight:"700",
+            fontFamily: [
+                'Noto Sans TC',
+                'sans-serif',
+              ].join(','),
+              
+          },
+
+          h6:{
+            fontSize: 15,
+            color:"#00",
+            fontWeight:"700",
+          
+
+          }
+        }})
+    
+
 
     const router = useRouter();
 
@@ -68,34 +112,51 @@ export default function OrderCheck() {
 
 
     return(
-        <div>
-            <div style = {{height:50, display:"flex", flexDirection:"row"}}
+        
+        <div >
+            <ThemeProvider theme={theme}>  
+            <div style = {{height:40, display:"flex", flexDirection:"row"}}
             >
 
-                <Typography onClick = {()=>router.back()}>go back</Typography>
-                <Typography sx = {{position: "absolute", right: 10}}
-                onClick = {()=>handleClickConfirm()}
+                <div style = {{position:"absolute", left:10,top:10, width:40, height:40, 
+                            display:"flex",justifyContent:"center", alignItems:"center",
+                            }}
+                            onClick = {()=>router.back()}>
+                               <ArrowBackIcon></ArrowBackIcon>
+                </div>
                 
-                >confirm</Typography>
+                    
+                <div style = {{position:"absolute", right:10,top:10, height:40, 
+                        display:"flex",justifyContent:"flex-end", alignItems:"center",
+                       }}
+
+                        onClick = {()=>handleClickConfirm()}>
+                            <Typography color="#0085FF" variant="h6" sx={{mr:1}}>完成</Typography>
+
+                    </div>
 
             </div>
+            <div style = {{marginTop:10}}>
             {tempOrderList.map((item)=>{
                 return(
-                    <div style = {{marginBottom:5, 
+                    <div style = {{
                     height:50, 
-                    backgroundColor:"red",
+                    backgroundColor:"white",
                     display:"flex", 
                     flexDirection:"row",
-                    alignItems:"center"}}>
+                    alignItems:"center",
+                    borderRadius:10,
+                    }}>
                   
-                        <Typography sx ={{ml:2}}>{item.name}</Typography>
-                        <Typography sx = {{position:"absolute", right :30}}>{"x"+item.quantity}</Typography>
+                        <Typography variant="h6" sx ={{ml:2}}>{item.name}</Typography>
+                        <Typography variant="h6" sx = {{position:"absolute", right :30}}>{"x"+item.quantity}</Typography>
                     </div>
               
                 )
 
             })}
-
+            </div>
+            </ThemeProvider>
 
 
         </div>

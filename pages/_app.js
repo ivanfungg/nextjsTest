@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { createTheme, ThemeProvider } from '@mui/material';
-//import "../styles/test.css"
+import "../styles/test.css"
 
 
 export default function App ({Component, pageProps}){
