@@ -107,7 +107,8 @@ export default function Home() {
                     numPeople: pplNumber,
                     ticketNumber:count.val(),
                     ticketCode: ticket,
-                    createdAt: serverTimestamp()
+                    createdAt: serverTimestamp(),
+                    phoneNumber: phoneNumber
                   })
 
                   router.push("/posts/first-post/?key=" + phoneNumber +"&code=" + key + "&type="+ticketPrefix )
